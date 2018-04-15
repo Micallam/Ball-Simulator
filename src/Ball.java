@@ -6,9 +6,9 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 
-public class Kula extends JPanel {
+public class Ball extends JPanel {
 
-    private ArrayList<Kulka> kulkaList;
+    private ArrayList<BallComponent> ballComponentList;
 
     private Timer timer;
     private final int DELAY = 16;
@@ -16,12 +16,12 @@ public class Kula extends JPanel {
     private static int numberOfBalls;
 
 
-    public Kula() {
-        kulkaList = new ArrayList<>();
-        addMouseListener(new kListener());
-        addMouseMotionListener(new kListener());
-        addMouseWheelListener(new kListener());
-        timer = new Timer(DELAY, new kListener());
+    public Ball() {
+        ballComponentList = new ArrayList<>();
+        addMouseListener(new bListener());
+        addMouseMotionListener(new bListener());
+        addMouseWheelListener(new bListener());
+        timer = new Timer(DELAY, new bListener());
         setBackground(Color.BLACK);
 
         timer.start();
@@ -31,25 +31,25 @@ public class Kula extends JPanel {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
 
-        for(Kulka k:kulkaList){
-            if(k.x-(k.size/2)<0 || k.x+(k.size/2)>getWidth()){
-                g.fillOval(k.x-(k.size/2), k.y-(k.size/2), (int)(k.size/1.3), k.size);
+        for(BallComponent b: ballComponentList){
+            if(b.x-(b.size/2)<0 || b.x+(b.size/2)>getWidth()){
+                g.fillOval(b.x-(b.size/2), b.y-(b.size/2), (int)(b.size/1.3), b.size);
             }
-            else if(k.y-(k.size/2)<0 || k.y+(k.size/2)>getHeight()){
-                g.fillOval(k.x-(k.size/2), k.y-(k.size/2), k.size, (int)(k.size/1.3));
+            else if(b.y-(b.size/2)<0 || b.y+(b.size/2)>getHeight()){
+                g.fillOval(b.x-(b.size/2), b.y-(b.size/2), b.size, (int)(b.size/1.3));
             }
             else{
-                g.fillOval(k.x-(k.size/2), k.y-(k.size/2), k.size, k.size);
+                g.fillOval(b.x-(b.size/2), b.y-(b.size/2), b.size, b.size);
             }
-            g.setColor(k.color);
+            g.setColor(b.color);
         }
 
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.setColor(Color.WHITE);
-        g.drawString("Liczba kulek: "+Integer.toString(Kula.numberOfBalls), 50, 50);
+        g.drawString("Number of balls: "+Integer.toString(Ball.numberOfBalls), 50, 50);
     }
 
-    private class kListener implements  MouseListener,
+    private class bListener implements  MouseListener,
                                         ActionListener,
                                         MouseMotionListener,
                                         MouseWheelListener
@@ -62,7 +62,7 @@ public class Kula extends JPanel {
         @Override
         public void mousePressed(MouseEvent e) {
             if(numberOfBalls<MAX_BALLS) {
-                kulkaList.add(new Kulka(e.getX(), e.getY(), 40));
+                ballComponentList.add(new BallComponent(e.getX(), e.getY(), 40));
                 repaint();
             }
         }
@@ -83,7 +83,7 @@ public class Kula extends JPanel {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            for(Kulka k:kulkaList){
+            for(BallComponent k: ballComponentList){
                 k.updatePosition();
             }
             repaint();
@@ -92,7 +92,7 @@ public class Kula extends JPanel {
         @Override
         public void mouseDragged(MouseEvent e){
             if(numberOfBalls<MAX_BALLS) {
-                kulkaList.add(new Kulka(e.getX(), e.getY(), 40));
+                ballComponentList.add(new BallComponent(e.getX(), e.getY(), 40));
                 repaint();
             }
         }
@@ -103,10 +103,10 @@ public class Kula extends JPanel {
 
         @Override
         public void mouseWheelMoved(MouseWheelEvent e){
-            for(int i=0;i<kulkaList.size();i++){
-                kulkaList.get(i).updateBallSize(e.getWheelRotation());
-                if(kulkaList.get(i).size<1){
-                    kulkaList.remove(i);
+            for(int i = 0; i< ballComponentList.size(); i++){
+                ballComponentList.get(i).updateBallSize(e.getWheelRotation());
+                if(ballComponentList.get(i).size<1){
+                    ballComponentList.remove(i);
                     numberOfBalls--;
                 }
             }
@@ -114,7 +114,7 @@ public class Kula extends JPanel {
         }
     }
 
-    private class Kulka{
+    private class BallComponent {
         private Color color;
         public int x;
         public int y;
@@ -123,7 +123,7 @@ public class Kula extends JPanel {
         public int xspeed;
         public int yspeed;
 
-        public Kulka(int x, int y, int size) {
+        public BallComponent(int x, int y, int size) {
             this.x = x;
             this.y = y;
             this.size = size;
@@ -156,13 +156,13 @@ public class Kula extends JPanel {
             double distanceBetweenBalls;
             double distanceToCollision = size * size;
 
-            for(Kulka kulka: kulkaList){
-                if(kulka.x == x && kulka.y == y) continue;
+            for(BallComponent ballComponent : ballComponentList){
+                if(ballComponent.x == x && ballComponent.y == y) continue;
 
-                distanceBetweenBalls = (x-kulka.x)*(x-kulka.x) + (y-kulka.y)*(y-kulka.y);
+                distanceBetweenBalls = (x- ballComponent.x)*(x- ballComponent.x) + (y- ballComponent.y)*(y- ballComponent.y);
                 if(distanceBetweenBalls < distanceToCollision){
                     ballReflection();
-                    kulka.ballReflection();
+                    ballComponent.ballReflection();
                 }
             }
         }
