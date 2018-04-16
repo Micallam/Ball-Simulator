@@ -161,8 +161,95 @@ public class Ball extends JPanel {
 
                 distanceBetweenBalls = (x- ballComponent.x)*(x- ballComponent.x) + (y- ballComponent.y)*(y- ballComponent.y);
                 if(distanceBetweenBalls < distanceToCollision){
-                    ballReflection();
-                    ballComponent.ballReflection();
+
+                    if((ballComponent.xspeed>0 && xspeed>0) && (ballComponent.yspeed>0 && yspeed>0)){
+                        if(ballComponent.xspeed>xspeed){
+                            int tempSpeed = xspeed;
+                            xspeed-=ballComponent.xspeed;
+                            ballComponent.xspeed+=tempSpeed;
+                        }else{
+                            int tempSpeed = ballComponent.xspeed;
+                            ballComponent.xspeed-=xspeed;
+                            xspeed+=tempSpeed;
+                        }
+
+                        if(ballComponent.yspeed>yspeed){
+                            int tempSpeed = yspeed;
+                            yspeed-=ballComponent.yspeed;
+                            ballComponent.yspeed+=tempSpeed;
+                        }else{
+                            int tempSpeed = ballComponent.yspeed;
+                            ballComponent.yspeed-=yspeed;
+                            yspeed+=tempSpeed;
+                        }
+                    }
+                    else if((ballComponent.xspeed>0 && xspeed>0) && (ballComponent.yspeed<0 && yspeed<0)){
+                        if(ballComponent.xspeed>xspeed){
+                            int tempSpeed = ballComponent.xspeed;
+                            ballComponent.xspeed-=xspeed;
+                            xspeed+=tempSpeed;
+                        }else{
+                            int tempSpeed = xspeed;
+                            ballComponent.xspeed-=xspeed;
+                            ballComponent.xspeed+=tempSpeed;
+                        }
+
+                        if(ballComponent.yspeed>yspeed){
+                            int tempSpeed = yspeed;
+                            yspeed-=ballComponent.yspeed;
+                            ballComponent.yspeed+=tempSpeed;
+                        }else{
+                            int tempSpeed = ballComponent.yspeed;
+                            ballComponent.yspeed-=yspeed;
+                            yspeed+=tempSpeed;
+                        }
+                    }
+                    else if((ballComponent.xspeed<0 && xspeed<0) && (ballComponent.yspeed<0 && yspeed<0)){
+                        if(ballComponent.xspeed>xspeed){
+                            int tempSpeed = ballComponent.xspeed;
+                            ballComponent.xspeed-=xspeed;
+                            xspeed+=tempSpeed;
+                        }else{
+                            int tempSpeed = xspeed;
+                            ballComponent.xspeed-=xspeed;
+                            ballComponent.xspeed+=tempSpeed;
+                        }
+
+                        if(ballComponent.yspeed>yspeed){
+                            int tempSpeed = yspeed;
+                            yspeed-=ballComponent.yspeed;
+                            ballComponent.yspeed+=tempSpeed;
+                        }else{
+                            int tempSpeed = ballComponent.yspeed;
+                            ballComponent.yspeed-=yspeed;
+                            yspeed+=tempSpeed;
+                        }
+                    }
+                    else if((ballComponent.xspeed<0 && xspeed<0) && (ballComponent.yspeed>0 && yspeed>0)){
+                        if(ballComponent.xspeed>xspeed){
+                            int tempSpeed = ballComponent.xspeed;
+                            ballComponent.xspeed-=xspeed;
+                            xspeed+=tempSpeed;
+                        }else{
+                            int tempSpeed = xspeed;
+                            ballComponent.xspeed-=xspeed;
+                            ballComponent.xspeed+=tempSpeed;
+                        }
+
+                        if(ballComponent.yspeed>yspeed){
+                            int tempSpeed = yspeed;
+                            yspeed-=ballComponent.yspeed;
+                            ballComponent.yspeed+=tempSpeed;
+                        }else{
+                            int tempSpeed = ballComponent.yspeed;
+                            ballComponent.yspeed-=yspeed;
+                            yspeed+=tempSpeed;
+                        }
+                    }
+                    else{
+                        ballReflection();
+                        ballComponent.ballReflection();
+                    }
                 }
             }
         }
