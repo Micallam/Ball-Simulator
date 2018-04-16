@@ -12,7 +12,7 @@ public class Ball extends JPanel {
 
     private Timer timer;
     private final int DELAY = 16;
-    private final int MAX_BALLS = 50;
+    private static int MAX_BALLS = 50;
     private static int numberOfBalls;
 
 
@@ -21,8 +21,10 @@ public class Ball extends JPanel {
         addMouseListener(new bListener());
         addMouseMotionListener(new bListener());
         addMouseWheelListener(new bListener());
+        addKeyListener(new bListener());
         timer = new Timer(DELAY, new bListener());
         setBackground(Color.BLACK);
+        setFocusable(true);
 
         timer.start();
     }
@@ -46,13 +48,17 @@ public class Ball extends JPanel {
 
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
         g.setColor(Color.WHITE);
-        g.drawString("Number of balls: "+Integer.toString(Ball.numberOfBalls), 50, 50);
+        g.drawString("Number of balls: "+Integer.toString(Ball.numberOfBalls), 10, 50);
+        g.drawString("MAX: "+Integer.toString(this.MAX_BALLS), 500, 50);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 15));
+        g.drawString("(change with arrows)", 500, 70);
     }
 
     private class bListener implements  MouseListener,
                                         ActionListener,
                                         MouseMotionListener,
-                                        MouseWheelListener
+                                        MouseWheelListener,
+                                        KeyListener
     {
 
         @Override
@@ -111,6 +117,29 @@ public class Ball extends JPanel {
                 }
             }
             repaint();
+        }
+
+        @Override
+        public void keyTyped(KeyEvent e){
+        }
+
+        @Override
+        public void keyPressed(KeyEvent e){
+            if(e.getKeyCode() == KeyEvent.VK_UP){
+                Ball.MAX_BALLS ++;
+            }else if((e.getKeyCode() == KeyEvent.VK_DOWN) && Ball.MAX_BALLS>0){
+                Ball.MAX_BALLS --;
+                if(Ball.numberOfBalls>Ball.MAX_BALLS){
+                    ballComponentList.remove(ballComponentList.size()-1);
+                    numberOfBalls--;
+                }
+            }
+
+            repaint();
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e){
         }
     }
 
