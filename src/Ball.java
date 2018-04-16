@@ -154,12 +154,13 @@ public class Ball extends JPanel {
 
         public void checkCollision(){
             double distanceBetweenBalls;
-            double distanceToCollision = size * size;
+            double distanceToCollision;
 
             for(BallComponent ballComponent : ballComponentList){
                 if(ballComponent.x == x && ballComponent.y == y) continue;
 
                 distanceBetweenBalls = (x- ballComponent.x)*(x- ballComponent.x) + (y- ballComponent.y)*(y- ballComponent.y);
+                distanceToCollision = ((size/2)+(ballComponent.size/2)) * ((size/2)+(ballComponent.size/2));
                 if(distanceBetweenBalls < distanceToCollision){
                     ballReflection();
                     ballComponent.ballReflection();
